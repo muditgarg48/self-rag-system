@@ -13,7 +13,7 @@ CORS(app)
 def refresh_data():
     try:
         download_files()
-        return "DATA REFRESHED"
+        return "DATA REFRESHED", 200
     except Exception as e:
         return jsonify({"error": "Error downloading the files and loading the vector database because {e}"}), 503
 
