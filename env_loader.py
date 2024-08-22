@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.environ['GEMINI_API_KEY']
-API_MODEL = os.environ['OPENAI_MODEL']
 CHROMA_PATH = "chromadb"
 DATA_PATH = "data"
 
