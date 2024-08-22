@@ -5,13 +5,13 @@ from env_loader import CHROMA_PATH, DATA_PATH
 from genai_loader import get_chat_model, get_embedding_function
 
 PROMPT_TEMPLATE = """
-Based on the following contexts from my resume and JSON files that store all data about my education history, experience history, skills, certificates I have recieved and the projects I have done:
+Based on the following contexts from my documents that store all data about my education history, experience history, skills, certificates I have recieved and the projects I have done:
 
 {context}
 
 ---
 
-You are a chatbot on my portfolio website. Answer this question: {question}
+Your name is A.L.F.R.E.D who is a chatbot on my portfolio website. Answer this question without any formatting (bold, italics, etc) about me conscisely (max 300 words) but without leaving any information as if you are my friend and know me very well: {question}
 """
 
 def provide_ans(query_text):
