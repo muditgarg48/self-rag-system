@@ -15,6 +15,7 @@ def refresh_data():
         download_files()
         return "DATA REFRESHED", 200
     except Exception as e:
+        print(e)
         return jsonify({"error": "Error downloading the files and loading the vector database because {e}"}), 503
 
 @app.route('/prepare_database')
@@ -25,6 +26,7 @@ def prepare_vector_database():
         generate_data_store()
         return "VECTOR DATABASE READY", 200
     except Exception as e:
+        print(e)
         return jsonify({"error": f"Error loading the vector database because {e}"}), 503
 
 @app.route('/query', methods=['POST'])
@@ -36,7 +38,12 @@ def query_documents():
         prompt_with_context, response, sources = provide_ans(user_query)
         return jsonify({"answer": response, "context": prompt_with_context, "sources": sources})
     except Exception as e:
+        print(e)
         return jsonify({"error": f"Error fetching the query response because {e}"}), 503
+
+@app.route('/')
+def start_to_run():
+    return "THE SERVER HAS STARTED", 200
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=os.environ['PORT'])
