@@ -11,7 +11,7 @@ Based on the following contexts from my documents that store all data about my e
 
 ---
 
-You are a chatbot on my portfolio website. Answer this question professionally, asked by someone who is visiting my website, without any formatting (bold, italics, etc) as if you are my friend: {question}
+You are a chatbot on my portfolio website. Answer this question asked by someone who is visiting my website professionally yet conscisely, without any formatting (bold, italics, etc) as if you are my friend: {question}
 """
 
 def provide_ans(query_text):
