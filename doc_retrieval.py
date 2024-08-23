@@ -11,7 +11,7 @@ Based on the following contexts from my documents that store all data about my e
 
 ---
 
-You are a chatbot on my portfolio website. Answer this question asked by someone who is visiting my website professionally yet conscisely, without any formatting (bold, italics, etc) as if you are my friend: {question}
+You are a chatbot on my portfolio website who answers professionally yet conscisely. Answer this question without any formatting (bold, italics, etc) as the chatbot: {question}
 """
 
 def provide_ans(query_text):
@@ -20,14 +20,14 @@ def provide_ans(query_text):
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     # Search the DB.
-    results = db.similarity_search_with_relevance_scores(query_text, k=10)
+    results = db.similarity_search_with_relevance_scores(query_text, k=5)
     if len(results) == 0:
         print(f"No any matching results.")
-        return
-    elif results[0][1] < 0.3:
+        return prompt, "I could not find the answer to your query", []
+    elif results[0][1] < 0.5:
         print(f"Unable to find suitable matching results.")
         print(f"The results were {results}")
-        return
+        return prompt, "I couldn't find upto the mark answers for your question in my database! Pleaswe rephrase your query", []
 
     context_text = "\n\n---\n\n".join([f"\"{doc.page_content}\"\nScore:{_score}" for doc, _score in results])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
@@ -56,17 +56,16 @@ def decode_sources(sources):
         elif file_name == "Current Resume.pdf":
             new_sources.append("Resume at Home")
         elif file_name == "education_history.json":
-            new_sources.append("Education Subsection in About Section")
+            new_sources.append("Education Subsection")
         elif file_name == "experience_data.json":
             new_sources.append("Experience Section")
         elif file_name == "projects_data.json":
             new_sources.append("Projects Section")
         elif file_name == "skills.json":
-            new_sources.append("Skills Subsection in About Section")
+            new_sources.append("Skills Subsection")
     return new_sources
 
 def main():
-    # Create CLI.
     parser = argparse.ArgumentParser()
     parser.add_argument("query_text", type=str, help="The query text.")
     args = parser.parse_args()
