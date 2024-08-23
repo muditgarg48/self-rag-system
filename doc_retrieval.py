@@ -54,7 +54,7 @@ def decode_sources(sources):
         if file_name == "certificates_data.json":
             new_sources.append("Certificate Section")
         elif file_name == "Current Resume.pdf":
-            new_sources.append("Resume at Home")
+            new_sources.append("Resume at Home Section")
         elif file_name == "education_history.json":
             new_sources.append("Education Subsection")
         elif file_name == "experience_data.json":
