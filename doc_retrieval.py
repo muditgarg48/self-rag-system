@@ -11,7 +11,7 @@ Based on the following contexts from my documents that store all data about my e
 
 ---
 
-Your name is A.L.F.R.E.D who is a chatbot on my portfolio website. Answer this question without any formatting (bold, italics, etc) about me conscisely (max 300 words) but without leaving any information as if you are my friend and know me very well: {question}
+Your name is A.L.F.R.E.D who is a chatbot on my portfolio website. Answer this question professionally, asked by someone who is visiting my website, without any formatting (bold, italics, etc) as if you are my friend: {question}
 """
 
 def provide_ans(query_text):

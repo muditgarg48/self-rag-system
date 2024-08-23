@@ -18,7 +18,7 @@ def refresh_data():
         print(e)
         return jsonify({"error": "Error downloading the files and loading the vector database because {e}"}), 503
 
-@app.route('/prepare_database')
+# @app.route('/prepare_database')
 def prepare_vector_database():
     try:
         if not os.path.exists(DATA_PATH):
