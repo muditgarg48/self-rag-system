@@ -24,7 +24,7 @@ def provide_ans(query_text):
     if len(results) == 0:
         print(f"No any matching results.")
         return "", "I could not find the answer to your query", []
-    elif results[0][1] < 0.5:
+    elif results[0][1] < 0.3:
         print(f"Unable to find suitable matching results.")
         print(f"The results were {results}")
         return "", "I couldn't find upto the mark answers for your question in my database! Pleaswe rephrase your query", []
