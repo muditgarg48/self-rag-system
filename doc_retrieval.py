@@ -23,11 +23,11 @@ def provide_ans(query_text):
     results = db.similarity_search_with_relevance_scores(query_text, k=5)
     if len(results) == 0:
         print(f"No any matching results.")
-        return prompt, "I could not find the answer to your query", []
+        return "", "I could not find the answer to your query", []
     elif results[0][1] < 0.5:
         print(f"Unable to find suitable matching results.")
         print(f"The results were {results}")
-        return prompt, "I couldn't find upto the mark answers for your question in my database! Pleaswe rephrase your query", []
+        return "", "I couldn't find upto the mark answers for your question in my database! Pleaswe rephrase your query", []
 
     context_text = "\n\n---\n\n".join([f"\"{doc.page_content}\"\nScore:{_score}" for doc, _score in results])
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
