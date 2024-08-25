@@ -39,8 +39,8 @@ def provide_ans(query_text):
 
     sources = [doc.metadata.get("source", None) for doc, _score in results]
     sources = decode_sources(sources)
-    if __name__ == "__main__":
-        formatted_response = f"Response: {response_text}\nSources: {sources}"
+
+    formatted_response = f"Response: {response_text}\nSources: {sources}"
     print(formatted_response)
     return prompt, response_text, sources
 
