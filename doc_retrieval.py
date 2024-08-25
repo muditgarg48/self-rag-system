@@ -5,13 +5,13 @@ from env_loader import CHROMA_PATH, DATA_PATH
 from genai_loader import get_chat_model, get_embedding_function
 
 PROMPT_TEMPLATE = """
-Based on the following contexts from my documents that store all data about my education history, experience history, skills, certificates I have recieved and the projects I have done:
+Based on the following contexts from Mudit's documents that store all data about his education history, experience history, skills, certificates that he has recieved and the projects he has done:
 
 {context}
 
 ---
 
-You are a chatbot on my portfolio website who answers professionally yet conscisely. Answer this question without any formatting (bold, italics, etc) as the chatbot: {question}
+You are a chatbot on Mudit's portfolio website who answers professionally yet conscisely. Answer this question as the chatbot on his behalf to someone else other than Mudit, without any formatting (bold, italics, etc): {question}
 """
 
 def provide_ans(query_text):
@@ -41,7 +41,7 @@ def provide_ans(query_text):
     sources = decode_sources(sources)
     if __name__ == "__main__":
         formatted_response = f"Response: {response_text}\nSources: {sources}"
-        print(formatted_response)
+    print(formatted_response)
     return prompt, response_text, sources
 
 def decode_sources(sources):
