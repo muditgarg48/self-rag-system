@@ -9,26 +9,26 @@ DATA_PATH = "data"
 FILES_FOR_DATABASE = [
     {
         "name": "certificates_data.json",
-        "link":"https://raw.githubusercontent.com/muditgarg48/muditgarg48.github.io/master/src/assets/data/certificates_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/certificates_data.json",
     },
     {
         "name": "education_history.json",
-        "link":"https://raw.githubusercontent.com/muditgarg48/muditgarg48.github.io/master/src/assets/data/education_history.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/education_history.json",
     },
     {
         "name": "experience_data.json",
-        "link":"https://raw.githubusercontent.com/muditgarg48/muditgarg48.github.io/master/src/assets/data/experience_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/experience_data.json",
     },
     {
         "name": "projects_data.json",
-        "link":"https://raw.githubusercontent.com/muditgarg48/muditgarg48.github.io/master/src/assets/data/projects_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/projects_data.json",
     },
     {
         "name": "skills.json",
-        "link":"https://raw.githubusercontent.com/muditgarg48/muditgarg48.github.io/master/src/assets/data/skills.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/skills.json",
     },
     {
         "name": "Current Resume.pdf",
-        "link":"https://raw.githubusercontent.com/muditgarg48/muditgarg48.github.io/master/src/assets/pdfs/My Resume.pdf",
+        "link":"https://muditgarg48.github.io/portfolio_data/documents/My Resume.pdf",
     },
 ]
