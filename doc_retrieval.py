@@ -51,7 +51,9 @@ def decode_sources(sources):
         _ = source.rfind('\\')
         file_name = source[_+1:]
         # print(file_name)
-        if file_name == "certificates_data.json":
+        if file_name == "about_data.json":
+            new_sources.append("About Section")
+        elif file_name == "certificates_data.json":
             new_sources.append("Certificate Section")
         elif file_name == "Current Resume.pdf":
             new_sources.append("Resume at Home Section")
@@ -59,6 +61,8 @@ def decode_sources(sources):
             new_sources.append("Education Subsection")
         elif file_name == "experience_data.json":
             new_sources.append("Experience Section")
+        elif file_name == "facts_data.json":
+            new_sources.append("Facts Mini-section")
         elif file_name == "projects_data.json":
             new_sources.append("Projects Section")
         elif file_name == "skills.json":
