@@ -8,6 +8,10 @@ DATA_PATH = "data"
 
 FILES_FOR_DATABASE = [
     {
+        "name": "about_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/about_data.json",
+    },
+    {
         "name": "certificates_data.json",
         "link":"https://muditgarg48.github.io/portfolio_data/data/certificates_data.json",
     },
@@ -18,6 +22,10 @@ FILES_FOR_DATABASE = [
     {
         "name": "experience_data.json",
         "link":"https://muditgarg48.github.io/portfolio_data/data/experience_data.json",
+    },
+    {
+        "name": "facts_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/facts_data.json",
     },
     {
         "name": "projects_data.json",
