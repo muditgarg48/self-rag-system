@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-import shutil
 from env_loader import DATA_PATH
 from doc_loader import download_files, generate_data_store
 from doc_retrieval import provide_ans
@@ -36,7 +35,11 @@ def query_documents():
         return jsonify({"error": "No query provided"}), 404
     try:
         prompt_with_context, response, sources = provide_ans(user_query)
-        return jsonify({"answer": response, "context": prompt_with_context, "sources": sources})
+        return jsonify({
+            "answer": response, 
+            "context": prompt_with_context, 
+            "sources": sources
+        })
     except Exception as e:
         print(e)
         return jsonify({"error": f"Error fetching the query response because {e}"}), 503

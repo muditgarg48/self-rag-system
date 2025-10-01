@@ -1,11 +1,11 @@
 from langchain.schema import Document
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import FAISS
 import os
 import shutil
 import requests
 
-from env_loader import CHROMA_PATH, FILES_FOR_DATABASE, DATA_PATH
-from genai_loader import get_embedding_function
+from env_loader import FAISS_PATH, FILES_FOR_DATABASE, DATA_PATH
+from models_loader import get_embedding_function
 from langchain_loader import get_pdf_loader, get_text_splitter, get_txt_loader, get_json_loader
 
 def main():
@@ -25,7 +25,7 @@ def download_files():
 def generate_data_store():
     documents = load_documents()
     chunks = split_text(documents)
-    save_to_chroma(chunks)
+    save_to_faiss(chunks)
 
 def load_documents():
     pdf_loader = get_pdf_loader()
@@ -48,14 +48,13 @@ def split_text(documents: list[Document]):
     print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
     return chunks
 
-def save_to_chroma(chunks: list[Document]):
-    if os.path.exists(CHROMA_PATH):
-        shutil.rmtree(CHROMA_PATH)
-    google_embedding_function = get_embedding_function()
-    Chroma.from_documents(
-        chunks, google_embedding_function, persist_directory=CHROMA_PATH
-    )
-    print(f"Saved {len(chunks)} chunks to {CHROMA_PATH}.")
+def save_to_faiss(chunks: list[Document]):
+    if os.path.exists(FAISS_PATH):
+        shutil.rmtree(FAISS_PATH)
+    faiss_embedding_function = get_embedding_function()
+    db = FAISS.from_documents(chunks, faiss_embedding_function)
+    db.save_local(FAISS_PATH)
+    print(f"Saved {len(chunks)} chunks to {FAISS_PATH}.")
 
 if __name__ == "__main__":
     main()

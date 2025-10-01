@@ -1,43 +1,41 @@
 import argparse
-from langchain_chroma import Chroma
-from langchain.prompts import ChatPromptTemplate
-from env_loader import CHROMA_PATH, DATA_PATH
-from genai_loader import get_chat_model, get_embedding_function
+from langchain_community.vectorstores import FAISS
+from langchain.prompts import PromptTemplate
+from models_loader import get_chat_model, get_embedding_function
+# If the answer is still not answerable with the provided context, say politely: 
+# "I don't have necessary information in my records to answer your query. Please rephrase or check Mudit's portfolio website for more details."
 
 PROMPT_TEMPLATE = """
-Based on the following contexts from Mudit's documents that store all data about his education history, experience history, skills, certificates that he has recieved and the projects he has done:
+You are a professional chatbot on Mudit's portfolio website.
+You have access to structured documents that describe Mudit, his education, experience, skills, certifications, and projects. 
+You also have access to Mudit's resume and a small structure document with some fun facts about Mudit.
+Always answer in a concise, factual, and professional tone, as if you are representing Mudit to a recruiter or colleague.
+Always answer without any formatting (bold, italics, etc).
+If the answer is not directly answerable with the provided context, try to make sense of the context to make up a valid response by mentioning what your context is how while you're not completely sure, this is what you feel could answer the user's query.
 
+Context:
 {context}
 
----
-
-You are a chatbot on Mudit's portfolio website who answers professionally yet conscisely. Answer this question as the chatbot on his behalf to someone else other than Mudit, without any formatting (bold, italics, etc): {question}
+Question: {question}
 """
 
 def provide_ans(query_text):
 
     embedding_function = get_embedding_function()
-    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
+    db = FAISS.load_local("faiss_index", embedding_function, allow_dangerous_deserialization=True)
 
-    # Search the DB.
-    results = db.similarity_search_with_relevance_scores(query_text, k=5)
-    if len(results) == 0:
-        print(f"No any matching results.")
-        return "", "I could not find the answer to your query", []
-    elif results[0][1] < 0.3:
-        print(f"Unable to find suitable matching results.")
-        print(f"The results were {results}")
-        return "", "I couldn't find upto the mark answers for your question in my database! Pleaswe rephrase your query", []
+    retriever = db.as_retriever(search_kwargs={"k": 10})
+    results = retriever.invoke(query_text)
 
-    context_text = "\n\n---\n\n".join([f"\"{doc.page_content}\"\nScore:{_score}" for doc, _score in results])
-    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    context_text = "\n---\n".join([f"\"{doc.page_content}\"" for doc in results])
+    prompt_template = PromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query_text)
     print(prompt)
 
     model = get_chat_model()
     response_text = model.generate_content(prompt).text
 
-    sources = [doc.metadata.get("source", None) for doc, _score in results]
+    sources = [doc.metadata.get("source", None) for doc in results]
     sources = decode_sources(sources)
 
     formatted_response = f"Response: {response_text}\nSources: {sources}"

@@ -17,7 +17,7 @@ def get_json_loader():
 
 def get_text_splitter():
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=300,
+        chunk_size=100,
         chunk_overlap=75,
         length_function=len,
         add_start_index=True,

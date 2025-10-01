@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 API_KEY = os.environ['GEMINI_API_KEY']
-CHROMA_PATH = "chromadb"
+FAISS_PATH = "faiss_index"
 DATA_PATH = "data"
 
 FILES_FOR_DATABASE = [
