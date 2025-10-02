@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
 from env_loader import DATA_PATH
-from doc_loader import download_files, generate_data_store
+from doc_loader import download_files, init_faiss_index
 from doc_retrieval import provide_ans
 
 app = Flask(__name__)
@@ -12,21 +12,11 @@ CORS(app)
 def refresh_data():
     try:
         download_files()
-        return "DATA REFRESHED", 200
+        init_faiss_index()  # Rebuild FAISS after downloading new files
+        return "DATA REFRESHED AND VECTOR DATABASE UPDATED", 200
     except Exception as e:
         print(e)
-        return jsonify({"error": "Error downloading the files and loading the vector database because {e}"}), 503
-
-# @app.route('/prepare_database')
-def prepare_vector_database():
-    try:
-        if not os.path.exists(DATA_PATH):
-            download_files()
-        generate_data_store()
-        return "VECTOR DATABASE READY", 200
-    except Exception as e:
-        print(e)
-        return jsonify({"error": f"Error loading the vector database because {e}"}), 503
+        return jsonify({"error": f"Error refreshing data: {e}"}), 503
 
 @app.route('/query', methods=['POST'])
 def query_documents():
@@ -49,4 +39,9 @@ def start_to_run():
     return "THE SERVER HAS STARTED", 200
 
 if __name__ == '__main__':
+    # Ensure data exists
+    if not os.path.exists(DATA_PATH):
+        download_files()
+    # Initialize FAISS index: load existing and rebuild in background
+    init_faiss_index()
     app.run(host='0.0.0.0', port=os.environ['PORT'])

@@ -6,11 +6,11 @@ import json, glob, os
 from env_loader import DATA_PATH
 
 def get_pdf_loader():
-    pdf_loader = DirectoryLoader(DATA_PATH, glob="*.pdf", show_progress=True, loader_cls=PyPDFLoader)
+    pdf_loader = DirectoryLoader(DATA_PATH, glob="*.pdf", loader_cls=PyPDFLoader)
     return pdf_loader
 
 def get_txt_loader():
-    text_loader = DirectoryLoader(DATA_PATH, glob="*.txt", show_progress=True, loader_cls=TextLoader)
+    text_loader = DirectoryLoader(DATA_PATH, glob="*.txt", loader_cls=TextLoader)
     return text_loader
 
 def get_json_semantic_docs():
@@ -40,7 +40,7 @@ def get_json_semantic_docs():
                 metadata={"source": os.path.basename(filepath)}
             ))
 
-    print(f"Found {len(docs)} from {number_of_jsons} JSON data files")
+    print(f"{number_of_jsons} found ({len(docs)} objects detected)")
     return docs
 
 def get_text_splitter():
