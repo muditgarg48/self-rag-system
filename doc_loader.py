@@ -6,7 +6,7 @@ import requests
 
 from env_loader import FAISS_PATH, FILES_FOR_DATABASE, DATA_PATH
 from models_loader import get_embedding_function
-from langchain_loader import get_pdf_loader, get_text_splitter, get_txt_loader, get_json_loader
+from langchain_loader import get_pdf_loader, get_text_splitter, get_txt_loader, get_json_semantic_docs
 
 def main():
     download_files()
@@ -30,21 +30,27 @@ def generate_data_store():
 def load_documents():
     pdf_loader = get_pdf_loader()
     text_loader = get_txt_loader()
-    json_loader = get_json_loader()
     # print("Loader ready")
     print("Loading .pdf files:")
     pdf_docs = pdf_loader.load()
     print("Loading .txt files:")
     txt_docs = text_loader.load()
     print("Loading .json files:")
-    json_docs = json_loader.load()
+    json_docs = get_json_semantic_docs()
     print("Done!!")
     documents = pdf_docs + txt_docs + json_docs
     return documents
 
 def split_text(documents: list[Document]):
     text_splitter = get_text_splitter()
-    chunks = text_splitter.split_documents(documents)
+    chunks = []
+    for doc in documents:
+        if doc.metadata.get("source","").endswith(".json"):
+            # JSON: keep as-is (semantic already)
+            chunks.append(doc)
+        else:
+            # PDFs/TXTs: split
+            chunks.extend(text_splitter.split_documents([doc]))
     print(f"Split {len(documents)} documents into {len(chunks)} chunks.")
     return chunks
 
