@@ -1,7 +1,7 @@
 from langchain.schema import Document
 from langchain_community.vectorstores import FAISS
 import os, shutil, requests
-from threading import Thread
+# from threading import Thread
 
 from env_loader import FAISS_PATH, FILES_FOR_DATABASE, DATA_PATH
 from models_loader import get_embedding_function
@@ -83,18 +83,25 @@ def init_faiss_index():
             print(f"Loaded FAISS index from {FAISS_PATH}")
         except Exception as e:
             print(f"Failed to load FAISS index: {e}")
+            db = None
 
     # 2. Kick off async rebuild (non-blocking)
-    def rebuild():
-        print("Rebuilding FAISS index in-memory...")
-        # Swap global reference
+    # def rebuild():
+    #     print("Rebuilding FAISS index in-memory...")
+    #     # Swap global reference
+    #     build_faiss_index()
+
+    #     # Overwrite persisted repo index (disk write)
+    #     save_faiss_index_locally()
+    #     print(f"Saved refreshed FAISS index to {FAISS_PATH}")
+
+    # Thread(target=rebuild, daemon=True).start()
+    # Only rebuild if FAISS index not in memory or failed to load
+    if db is None:
+        print("No FAISS index in memory or failed to load. Building now...")
         build_faiss_index()
-
-        # Overwrite persisted repo index (disk write)
         save_faiss_index_locally()
-        print(f"Saved refreshed FAISS index to {FAISS_PATH}")
-
-    Thread(target=rebuild, daemon=True).start()
+        print(f"FAISS index built and saved to {FAISS_PATH}")
 
 if __name__ == "__main__":
     main()
