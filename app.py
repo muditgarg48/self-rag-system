@@ -34,6 +34,10 @@ def query_documents():
         print(e)
         return jsonify({"error": f"Error fetching the query response because {e}"}), 503
 
+@app.route('/stay_alive', methods=['GET'])
+def stay_alive():
+    return "ALIVE", 200
+
 @app.route('/')
 def start_to_run():
     return "THE SERVER HAS STARTED", 200
