@@ -1,7 +1,7 @@
 import argparse
-from langchain_community.vectorstores import FAISS
-from langchain.prompts import PromptTemplate
-from models_loader import get_chat_model, get_embedding_function
+from langchain_core.prompts import PromptTemplate
+from models_loader import get_chat_model
+from doc_loader import get_db
 # If the answer is still not answerable with the provided context, say politely: 
 # "I don't have necessary information in my records to answer your query. Please rephrase or check Mudit's portfolio website for more details."
 
@@ -20,10 +20,10 @@ Question: {question}
 """
 
 def provide_ans(query_text):
-
-    embedding_function = get_embedding_function()
-    db = FAISS.load_local("faiss_index", embedding_function, allow_dangerous_deserialization=True)
-
+    db = get_db()
+    if db is None:
+        raise RuntimeError("FAISS database not initialized. Please ensure init_faiss_index() was called during startup.")
+    
     retriever = db.as_retriever(search_kwargs={"k": 10})
     results = retriever.invoke(query_text)
 

@@ -1,4 +1,4 @@
-from langchain.schema import Document
+from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 import os, shutil, requests
 # from threading import Thread
@@ -9,6 +9,9 @@ from langchain_loader import get_pdf_loader, get_text_splitter, get_txt_loader, 
 
 # Global FAISS reference
 db = None
+
+def get_db():
+    return db
 
 def main():
     download_files()
