@@ -1,13 +1,12 @@
 flask==3.0.3
 flask-cors==4.0.1
 google-generativeai==0.7.2
-jq==1.8.0
 langchain==0.2.14
 langchain-core==0.2.34
 langchain-community==0.2.12
 langchain-text-splitters==0.2.2
-langchain-huggingface==0.0.3
-sentence-transformers==2.7.0
 faiss-cpu==1.8.0
 python-dotenv==1.0.1
 pypdf==4.3.1
+requests==2.31.0
+fastembed==0.7.3

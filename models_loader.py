@@ -1,7 +1,27 @@
 import google.generativeai as genai
-from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.embeddings import Embeddings
+from typing import List
+from fastembed import TextEmbedding
 
 from env_loader import API_KEY
+
+class FastEmbedLangChain(Embeddings):
+
+    def __init__(self, model_name: str = "BAAI/bge-small-en-v1.5"):
+        print(f"Initializing FastEmbed model: {model_name} (first time only)...")
+        self.embedding_model = TextEmbedding(model_name=model_name)
+        print("FastEmbed model loaded and cached.")
+    
+    def embed_documents(self, texts: List[str]) -> List[List[float]]:
+        embeddings = list(self.embedding_model.embed(texts))
+        # Convert numpy arrays to Python lists
+        return [emb.tolist() if hasattr(emb, 'tolist') else list(emb) for emb in embeddings]
+    
+    def embed_query(self, text: str) -> List[float]:
+        """Embed a single query text."""
+        embedding = list(self.embedding_model.embed([text]))[0]
+        # Convert numpy array to Python list
+        return embedding.tolist() if hasattr(embedding, 'tolist') else list(embedding)
 
 # Cache embedding function globally
 _embedding_function = None
@@ -9,11 +29,9 @@ _embedding_function = None
 def get_embedding_function():
     global _embedding_function
     if _embedding_function is None:
-        model_name = "sentence-transformers/all-MiniLM-L6-v2"  # lightweight, good quality
-        # model_name = "sentence-transformers/all-mpnet-base-v2"  # higher quality, slightly heavier
-        print("Loading embedding model (first time only)...")
-        _embedding_function = HuggingFaceEmbeddings(model_name=model_name)
-        print("Embedding model loaded and cached.")
+        # Use FastEmbed - lightweight, ONNX-based, no PyTorch needed!
+        # Uses BAAI/bge-small-en-v1.5 which is optimized for CPU and small memory footprint
+        _embedding_function = FastEmbedLangChain(model_name="BAAI/bge-small-en-v1.5")
     return _embedding_function
 
 # Cache chat model globally to avoid recreating on every request
