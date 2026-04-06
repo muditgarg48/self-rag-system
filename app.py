@@ -21,10 +21,11 @@ def refresh_data():
 @app.route('/query', methods=['POST'])
 def query_documents():
     user_query = request.form.get('user_query')
+    mode = request.form.get('site_mode')
     if not user_query:
         return jsonify({"error": "No query provided"}), 404
     try:
-        prompt_with_context, response, sources = provide_ans(user_query)
+        prompt_with_context, response, sources = provide_ans(mode, user_query)
         return jsonify({
             "answer": response, 
             "context": prompt_with_context, 

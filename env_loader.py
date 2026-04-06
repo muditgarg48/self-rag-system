@@ -39,4 +39,24 @@ FILES_FOR_DATABASE = [
         "name": "Current Resume.pdf",
         "link":"https://muditgarg48.github.io/portfolio_data/documents/My Resume.pdf",
     },
+    {
+        "name": "freelance_about_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/freelance_about_data.json",
+    },
+    {
+        "name": "freelance_process_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/freelance_process_data.json",
+    },
+    {
+        "name": "freelance_services_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/freelance_services_data.json",
+    },
+    {
+        "name": "freelance_testimonials_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/freelance_testimonials_data.json",
+    },
+    {
+        "name": "freelance_projects_data.json",
+        "link":"https://muditgarg48.github.io/portfolio_data/data/freelance_projects_data.json",
+    }
 ]
